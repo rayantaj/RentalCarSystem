@@ -5,10 +5,7 @@
  */
 package car_rent_system;
 
-/**
- *
- * @author rayan taj
- */
+
 public  abstract class Renter extends User{
 
     public Renter(String Name, String Email, String Password, String phone) {

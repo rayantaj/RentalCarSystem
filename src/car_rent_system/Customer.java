@@ -14,16 +14,14 @@ public class Customer extends Renter {
 
     String SCN, License_Number;
     Date DOB, End_License;
-    boolean handicap;
     Reservation C_Reservation;
 
-    public Customer(String SCN, String License_Number, Date BOD, Date End_License, boolean handicap, String Name, String Email, String Password, String phone) {
+    public Customer(String SCN, String License_Number, Date BOD, Date End_License, String Name, String Email, String Password, String phone) {
         super(Name, Email, Password, phone);
         this.SCN = SCN;
         this.License_Number = License_Number;
         this.DOB = BOD;
         this.End_License = End_License;
-        this.handicap = handicap;
 
     }
 
@@ -59,14 +57,6 @@ public class Customer extends Renter {
         this.End_License = End_License;
     }
 
-    public boolean isHandicap() {
-        return handicap;
-    }
-
-    public void setHandicap(boolean handicap) {
-        this.handicap = handicap;
-    }
-
     public Reservation getC_Reservation() {
         return C_Reservation;
     }
@@ -86,7 +76,6 @@ public class Customer extends Renter {
         System.out.println("password : " + this.getPassword());
         System.out.println("LICENSE NUMBER : " + this.getLicense_Number());
         System.out.println("End of license : " + this.getEnd_License());
-        System.out.println("is handicap ? : " + this.isHandicap());
         System.out.println("phone : " + this.phone);
     }
 
