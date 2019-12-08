@@ -22,11 +22,11 @@ public class customerSignUp extends javax.swing.JFrame {
      */
     DB db;
     Connection con;
-
+    
     public customerSignUp() {
         initComponents();
     }
-
+    
     public customerSignUp(DB db) {
         initComponents();
         this.db = db;
@@ -326,68 +326,63 @@ public class customerSignUp extends javax.swing.JFrame {
         java.util.Date licEDateUtil = new java.util.Date(licEDate);
         java.util.Date nowDate = new java.util.Date();
         
-        
-        if (Name == null || Name.length() == 0){
+        if (Name == null || Name.length() == 0) {
             JOptionPane.showMessageDialog(this, "Name cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-        }else 
-        {
-        status = checkEmailFormat(Email);
-        if (status) {
-            if (scn.length() == 10) {
-                
-                if (licenseNumber.length() == 10){
+        } else {
+            status = checkEmailFormat(Email);
+            if (status) {
+                if (scn.length() == 10) {
                     
-                    if (checkPhoneFormat(Phone)){
+                    if (licenseNumber.length() == 10) {
                         
-                        if (PassWord.length() > 6){
+                        if (checkPhoneFormat(Phone)) {
                             
-                            
-                            int age = nowDate.getYear() - dobUtil.getYear();
-                            if (age >= 21){
+                            if (PassWord.length() > 6) {
                                 
-                               
-                                if (licEDateUtil.after(nowDate)){
+                                int age = nowDate.getYear() - dobUtil.getYear();
+                                if (age >= 21) {
                                     
-                                    
-                                    Customer customer = new Customer(scn, licenseNumber, dobUtil, licEDateUtil, Name, Email, PassWord, Phone);
-                                    if (!db.checkExists(customer)){
-                                        db.addUser(customer);
-                                    }else {
-                                        JOptionPane.showMessageDialog(this, "SCN/Email/Phone already used", "Error", JOptionPane.ERROR_MESSAGE);
+                                    if (licEDateUtil.after(nowDate)) {
+                                        
+                                        Customer customer = new Customer(scn, licenseNumber, dobUtil, licEDateUtil, Name, Email, PassWord, Phone);
+                                        if (!db.checkExists(customer)) {
+                                            db.addUser(customer);
+                                            new CustomerHomePage(customer, con, db).setVisible(true);
+                                            this.setVisible(false);
+                                        } else {
+                                            JOptionPane.showMessageDialog(this, "SCN/Email/Phone already used", "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                        
+                                    } else { // INVALID LICENSE NUMBER DATE
+                                        JOptionPane.showMessageDialog(this, "You must have a valid driver's license", "Error", JOptionPane.ERROR_MESSAGE);
                                     }
                                     
-                                }else { // INVALID LICENSE NUMBER DATE
-                                    JOptionPane.showMessageDialog(this, "You must have a valid driver's license", "Error", JOptionPane.ERROR_MESSAGE);
+                                } else { // AKBR W T3AL.
+                                    JOptionPane.showMessageDialog(this, "You have to be 21 in order to register", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
                                 
-                            }else { // AKBR W T3AL.
-                                JOptionPane.showMessageDialog(this, "You have to be 21 in order to register", "Error", JOptionPane.ERROR_MESSAGE);
+                            } else {// INVALID PASSWORD
+                                JOptionPane.showMessageDialog(this, "Password too short", "Error", JOptionPane.ERROR_MESSAGE);
+                                
                             }
                             
-                            
-                        }else {// INVALID PASSWORD
-                JOptionPane.showMessageDialog(this, "Password too short", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else {// INVALID PHONE NUMBER
+                            JOptionPane.showMessageDialog(this, "Invalid Phone Number", "Error", JOptionPane.ERROR_MESSAGE);
                             
                         }
                         
-                    }else {// INVALID PHONE NUMBER
-                JOptionPane.showMessageDialog(this, "Invalid Phone Number", "Error", JOptionPane.ERROR_MESSAGE);
-                        
+                    } else { // INVALID LICENSE NUMBER
+                        JOptionPane.showMessageDialog(this, "Invalid License Number", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     
-                }else { // INVALID LICENSE NUMBER
-                JOptionPane.showMessageDialog(this, "Invalid License Number", "Error", JOptionPane.ERROR_MESSAGE);
+                } else { // INVALID SOCIAL SECURITY NUMBER
+                    JOptionPane.showMessageDialog(this, "Invalid SCN", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-
-            } else { // INVALID SOCIAL SECURITY NUMBER
-                JOptionPane.showMessageDialog(this, "Invalid SCN", "Error", JOptionPane.ERROR_MESSAGE);
+                
+            } else { // INVALID E-MAIL FORMAT
+                JOptionPane.showMessageDialog(this, "Invalid E-Mail Format", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        } else { // INVALID E-MAIL FORMAT
-            JOptionPane.showMessageDialog(this, "Invalid E-Mail Format", "Error", JOptionPane.ERROR_MESSAGE);
-                }
         }
-        
 
 //        status = checkEmailFormat(Email);
 //        if (status) {
@@ -422,10 +417,10 @@ public class customerSignUp extends javax.swing.JFrame {
     }//GEN-LAST:event_SignUp_ButtonActionPerformed
 
     private void loginToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginToggleActionPerformed
-
+        
         this.setVisible(false);
-        new UserPage(con,db).setVisible(true);
-
+        new UserPage(con, db).setVisible(true);
+        
 
     }//GEN-LAST:event_loginToggleActionPerformed
 
@@ -436,7 +431,7 @@ public class customerSignUp extends javax.swing.JFrame {
     private void LicenseNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LicenseNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_LicenseNumberActionPerformed
-
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -496,32 +491,31 @@ public class customerSignUp extends javax.swing.JFrame {
     private javax.swing.JButton loginToggle;
     // End of variables declaration//GEN-END:variables
 
-
     private boolean checkEmailFormat(String Email) {
-    String regex = "^(.+)@(.+)$";
- 
-    Pattern pattern = Pattern.compile(regex);
- 
-    Matcher matcher = pattern.matcher(Email);
-    
-    return matcher.matches();
-
+        String regex = "^(.+)@(.+)$";
+        
+        Pattern pattern = Pattern.compile(regex);
+        
+        Matcher matcher = pattern.matcher(Email);
+        
+        return matcher.matches();
+        
     }
-
+    
     private boolean checkPhoneFormat(String Phone) {
-        if (Phone.length() != 10){
+        if (Phone.length() != 10) {
             return false;
-        }else {
+        } else {
             try {
                 int i = Integer.parseInt(Phone);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return false;
             }
         }
         
         return true;
     }
-
+    
     public boolean Register(long id, String name, String Email, String Phone, String Password) throws SQLException {
         String q = "insert into users values (? , ? , ? , ?,?)";
         PreparedStatement pstat = con.prepareStatement(q, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -530,19 +524,19 @@ public class customerSignUp extends javax.swing.JFrame {
         pstat.setString(3, Email);
         pstat.setString(4, Password);
         pstat.setString(5, Phone);
-
+        
         if (!checkExists(Email, Phone)) {
             pstat.execute();
             return true;
         }
-
+        
         return false;
     }
-
+    
     private boolean checkExists(String Email, String Phone) throws SQLException {
         String q = "select * from users where email = ? OR phone = ?";
         PreparedStatement pstat = con.prepareStatement(q, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
+        
         pstat.setString(1, Email);
         pstat.setString(2, Phone);
         ResultSet rs = pstat.executeQuery();
@@ -550,8 +544,8 @@ public class customerSignUp extends javax.swing.JFrame {
         if (rs.next()) {
             return true;
         }
-
+        
         return false;
     }
-
+    
 }

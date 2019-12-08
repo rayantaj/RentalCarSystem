@@ -14,20 +14,21 @@ import java.util.Date;
  */
 public class Car {
 
-    String Car_brand, Regesteration_Id,license_Number, Car_type, Car_Name, Gas_Type, Color, GearBox;
+    String Car_brand, Regesteration_Id, Car_type, Car_Name, Gas_Type, Color, GearBox;
 
     Date model_Year;
     int Number_Seats, Price_Per_Day;
-    Image image;
-    boolean Cruse, HandiCap_Support;
+    String image;
+    boolean HandiCap_Support;
+    int branchID;
 
     public Car() {
     }
 
-    public Car(String Car_brand, String Regesteration_Id, String license_Number, String Car_type, String Car_Name, String Gas_Type, String Color, String GearBox, Date model_Year, int Number_Seats, int Price_Per_Day, Image image, boolean Cruse, boolean HandiCap_Support) {
+    public Car(String Car_brand, String Regesteration_Id, String Car_type, String Car_Name, String Gas_Type, String Color, String GearBox, Date model_Year, int Number_Seats, int Price_Per_Day, String image, boolean HandiCap_Support, int branchID) {
         this.Car_brand = Car_brand;
         this.Regesteration_Id = Regesteration_Id;
-        this.license_Number = license_Number;
+
         this.Car_type = Car_type;
         this.Car_Name = Car_Name;
         this.Gas_Type = Gas_Type;
@@ -37,11 +38,11 @@ public class Car {
         this.Number_Seats = Number_Seats;
         this.Price_Per_Day = Price_Per_Day;
         this.image = image;
-        this.Cruse = Cruse;
+        this.branchID = branchID;
         this.HandiCap_Support = HandiCap_Support;
     }
 
-    public Car(String Car_brand, String Car_type, String Car_Name, String Gas_Type, String Color, String GearBox, Date model_Year, int Number_Seats, int Price_Per_Day, Image image, boolean Cruse, boolean HandiCap_Support) {
+    public Car(String Car_brand, String Car_type, String Car_Name, String Gas_Type, String Color, String GearBox, Date model_Year, int Number_Seats, int Price_Per_Day, String image, boolean HandiCap_Support) {
         this.Car_brand = Car_brand;
         this.Car_type = Car_type;
         this.Car_Name = Car_Name;
@@ -52,16 +53,19 @@ public class Car {
         this.Number_Seats = Number_Seats;
         this.Price_Per_Day = Price_Per_Day;
         this.image = image;
-        this.Cruse = Cruse;
+
         this.HandiCap_Support = HandiCap_Support;
     }
-
-    
-   
 
     public String getCar_brand() {
         return Car_brand;
     }
+
+    public int getBranchID() {
+        return branchID;
+    }
+    
+    
 
     public void setCar_brand(String Car_brand) {
         this.Car_brand = Car_brand;
@@ -115,8 +119,6 @@ public class Car {
         this.GearBox = GearBox;
     }
 
-  
-
     public Date getModel_Year() {
         return model_Year;
     }
@@ -141,22 +143,12 @@ public class Car {
         this.Price_Per_Day = Price_Per_Day;
     }
 
-  
-
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(String image) {
         this.image = image;
-    }
-
-    public boolean isCruse() {
-        return Cruse;
-    }
-
-    public void setCruse(boolean Cruse) {
-        this.Cruse = Cruse;
     }
 
     public boolean isHandiCap_Support() {
@@ -167,21 +159,12 @@ public class Car {
         this.HandiCap_Support = HandiCap_Support;
     }
 
-    public String getLicense_Number() {
-        return license_Number;
-    }
-
-    public void setLicense_Number(String license_Number) {
-        this.license_Number = license_Number;
-    }
-
     public void GetALL_Data() {
         System.out.println("");
         System.out.println("CAR ");
         System.out.println("");
         System.out.println("brand : " + this.Car_brand);
         System.out.println("regesteration id : " + this.Regesteration_Id);
-        System.out.println("License number : " + this.getLicense_Number());
         System.out.println("car type : " + this.Car_type);
         System.out.println("car name : " + this.Car_Name);
         System.out.println("gas type : " + this.Gas_Type);
@@ -191,7 +174,6 @@ public class Car {
         System.out.println("number of seats : " + this.Number_Seats);
         System.out.println("price per day : " + this.Price_Per_Day);
         System.out.println("image : " + this.image);
-        System.out.println("cruse : " + this.Cruse);
         System.out.println("handicap support : " + this.HandiCap_Support);
     }
 

@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,21 +19,20 @@ import javax.swing.JOptionPane;
  * @author USER
  */
 public class UserPage extends javax.swing.JFrame {
-    
+
     DB db;
     Connection con;
-    public int userID;
-    
-    public UserPage(Connection con,DB db) {
+    //public int userID;
+    Customer customer;
+    Admin admin;
+    PreparedStatement statement;
+
+    public UserPage(Connection con, DB db) {
         initComponents();
         this.con = con;
         this.db = db;
     }
-    
-    public UserPage() {
-        initComponents();
-    }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -193,27 +195,23 @@ public class UserPage extends javax.swing.JFrame {
 
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        try {
-            
-            String email = EMailField.getText();
-            String password = passwordField.getText();
-            
-            String q = "select * from customers where email = ? AND password = ?";
-            PreparedStatement stat = con.prepareStatement(q, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stat.setString(1, email);
-            stat.setString(2, password);
-            ResultSet rs = stat.executeQuery();
-            rs.beforeFirst();
-            if (rs.first()) {
-                new HomePage(userID, con).setVisible(true);
-                System.out.println("LOGIN SUCCESSFUL");
-            } else {
-                // POP UP MESSAGE INVALID USERNAME/PASSWORD
-                JOptionPane.showMessageDialog(this, "Invalid Username/Password", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
+
+        String email = EMailField.getText();
+        String password = passwordField.getText();
+
+        
+        if (LogIn("admins", email, password) == true) {
+
+            new AdminHomePage(con, db).setVisible(true);
+            this.setVisible(false);
+        } else if (LogIn("customers", email, password)) {
+            new CustomerHomePage(customer, con, db).setVisible(true);
+            this.setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid email/password", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void signUpToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpToggleActionPerformed
@@ -225,8 +223,56 @@ public class UserPage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
     }
+
+    public boolean LogIn(String TableName, String Email, String Password) {
+
+        try {
+
+            String q = "select * from " + TableName + " where email = ? AND password = ?";
+
+            statement = null;
+            // CREATE THE STATEMENT
+            statement = con.prepareStatement(q, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            // ASSIGN THE VALUE INTO THE STATMENT
+            statement.setString(1, Email);
+            statement.setString(2, Password);
+            // RESULT QUERY 
+            ResultSet rs = statement.executeQuery();
+            rs.beforeFirst();
+            if (rs.first()) {
+                if (TableName.equalsIgnoreCase("customers")) {
+                    System.out.println("LOGIN SUCCESSFUL");
+                    String Scn = rs.getInt("scn") + "";
+                    String emailRs = rs.getString("email");
+                    String name = rs.getString("name");
+                    String passwordRS = rs.getString("password");
+                    String I_Number = rs.getString("lNumber");
+                    Date dateLice = rs.getDate("eLicDate");
+                    Date BOD = rs.getDate("dob");
+                    String phone = rs.getString("Phone");
+                    //String SCN, String License_Number, Date BOD, Date End_License, String Name, String Email, String Password, String phone
+                    //this.userID = Integer.parseInt(Scn);
+                    customer = new Customer(Scn, I_Number, BOD, dateLice, name, emailRs, passwordRS, phone);
+                    customer.GetALL_Data();
+                } else {
+                    //String Name, String Email, String Password, String phone
+                    admin = new Admin(rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("phone"));
+
+                }
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField EMailField;

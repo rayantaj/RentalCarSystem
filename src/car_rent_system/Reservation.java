@@ -18,20 +18,16 @@ public class Reservation {
     String Rental_ID;
     Date Date_Start_rent, Date_Finish_Rent;
     double total_price;
-    Car car;
 
     public Reservation() {
     }
 
-    public Reservation(int Number_Days, String Rental_ID, Date Date_Start_rent, Date Date_Finish_Rent, Car car) {
+    public Reservation(String Rental_ID, Date Date_Start_rent, Date Date_Finish_Rent) {
         this.Number_Days = Number_Days;
         this.Rental_ID = Rental_ID;
-       
         this.Date_Start_rent = Date_Start_rent;
         this.Date_Finish_Rent = Date_Finish_Rent;
-        this.car = car;
         Generate_Reservation_ID();
-        calculate_Total_Price(car.Price_Per_Day, Number_Days);
     }
 
     public int getReservation_ID() {
@@ -84,13 +80,6 @@ public class Reservation {
         this.total_price = total_price;
     }
 
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
 
     public void Generate_Reservation_ID() {
         // initialize a Random object somewhere; you should only need one
@@ -101,25 +90,15 @@ public class Reservation {
 
     }
 
-    public void calculate_Total_Price(int Price_Per_Day, int number_Of_Days) {
-
-        this.total_price = number_Of_Days * Price_Per_Day;
-
-    }
-
     public void GetAll_Data() {
 
         System.out.println("");
         System.out.println("RESERVATION");
-        System.out.println("Car ID : " + this.getCar().getRegesteration_Id());
         System.out.println("the rental id : " + this.getRental_ID());
         System.out.println("reservation Id : " + this.getReservation_ID());
         System.out.println("start date : " + this.getDate_Start_rent());
         System.out.println("finish date : " + this.getDate_Finish_Rent());
-        System.out.println("car brand : " + this.getCar().getCar_brand());
-        System.out.println("car name : " + this.getCar().getCar_Name());
         System.out.println("number of days : " + this.getNumber_Days());
-        System.out.println("price per day : " + this.getCar().getPrice_Per_Day());
         System.out.println("total price : " + this.getTotal_price());
 
     }
